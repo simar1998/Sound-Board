@@ -27,6 +27,7 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
 import com.example.simar.soundboard.R;
 import com.example.simar.soundboard.recordings.Playback;
 import com.example.simar.soundboard.recordings.Recorder;
@@ -34,6 +35,7 @@ import com.example.simar.soundboard.soundboard.Recording;
 import com.example.simar.soundboard.soundboard.Recordings;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -155,12 +157,11 @@ public class NewAudioFragment extends Fragment {
         recordings = jsonFromFile();
 
         Bundle arguments = getArguments();
-        if (!arguments.getString("INCOMING_FRAGMENT").equals("") && arguments != null) {
+        if (Integer.parseInt(arguments.getString("INCOMING_FRAGMENT")) >= 1 && arguments != null) {
             recordingNameEditText.setText(recordings.getRecording(Integer.parseInt(arguments.getString("INCOMING_FRAGMENT"))).getRecordingName());
             currentRecording = recordings.getRecording(Integer.parseInt(arguments.getString("INCOMING_FRAGMENT")));
             hasRecording = true;
-        }
-        else if(arguments == null){
+        } else if (arguments.getString("INCOMING_FRAGMENT").equals("-1")) {
             recordingNameEditText.setText("");
             currentRecording = new Recording();
         }
@@ -237,6 +238,9 @@ public class NewAudioFragment extends Fragment {
                         Toast.makeText(getContext(), "Please enter the name for the recording first", Toast.LENGTH_SHORT).show();
                     } else {
 
+                        final String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" +
+                                recordingNameEditText.getText().toString() + ".mp3";
+
                         new CountDownTimer(10000, 1000) {
 
 
@@ -256,9 +260,11 @@ public class NewAudioFragment extends Fragment {
                                 recorder.stopRecording();
                                 toggleButton.setChecked(false);
                                 progresTimeText.setText("0:00");
-                                recordings.addRecording(recorder.getRecordingName(), "", recorder.getPath());
+                                Recording newRecording = new Recording(recorder.getRecordingName(), "", path);
+                                recordings.addRecording(newRecording);
+                                recordings.validateRecordings();
                                 jsonToFile(recordings);
-                                currentRecording = recordings.getRecording(recordings.getLength()-1);
+                                currentRecording = newRecording;
                             }
                         }.start();
                     }
@@ -270,9 +276,9 @@ public class NewAudioFragment extends Fragment {
         playButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b){
-                    Log.d("Playback Path",currentRecording.getRecordingPath()+"/"+currentRecording.getRecordingName()+".mp3");
-                    Playback playback = new Playback( Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + currentRecording.getRecordingName() + ".mp3");
+                if (b) {
+                    Log.d("Playback Path", currentRecording.getRecordingPath() + "/" + currentRecording.getRecordingName() + ".mp3");
+                    Playback playback = new Playback(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + currentRecording.getRecordingName() + ".mp3");
                     playback.startPlaying();
                 }
             }

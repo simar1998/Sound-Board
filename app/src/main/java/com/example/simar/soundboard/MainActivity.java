@@ -62,7 +62,10 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        Recordings recordings = jsonFromFile();
+        recordings.validateRecordings();
+        //TODO Overload the method in the Recordings class to return Recordings object and overload again to return arraylist of recordings type
+        jsonToFile(jsonFromFile().validateRecordings());
 
     }
 

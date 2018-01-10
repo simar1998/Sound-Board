@@ -67,8 +67,12 @@ public class Recordings {
         return new Recording();
     }
 
-
-
-
+    public void validateRecordings(){
+        for(int i = 0; i  < this.recordings.size();i++){
+            if(!(new File(this.recordings.get(i).getRecordingPath())).exists()){
+                this.recordings.remove(i);
+            }
+        }
+    }
 
 }

@@ -113,6 +113,8 @@ public class RecordingsFragment extends Fragment implements NewAudioFragment.OnF
             reader = new JsonReader(new FileReader(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "Recordings.json"));
             Recordings recordingsFromFile = gson.fromJson(reader,Recordings.class);
             Log.d("Recording From File", gson.toJson(recordingsFromFile));
+            recordingsFromFile.validateRecordings();
+            jsonToFile(recordingsFromFile);
             if(recordingsFromFile != null){
                 recordings = recordingsFromFile;
             }
@@ -206,15 +208,42 @@ public class RecordingsFragment extends Fragment implements NewAudioFragment.OnF
             public void onClick(View view) {
                 newAudioFragment = new NewAudioFragment();
                 fragmentManager = getFragmentManager();
+                Bundle arguments = new Bundle();
+                arguments.putString("INCOMING_FRAGMENT","-1");
+                newAudioFragment.setArguments(arguments);
                 transition = fragmentManager.beginTransaction();
                 transition.replace(R.id.contentFragment, newAudioFragment);
-                //Adds the current fragment into the backstack so when the back button is pressed it commes back to Recordings fragment.
                 transition.addToBackStack("");
                 transition.commit();
             }
         });
     }
 
+    public void jsonToFile(Recordings recordings) {
+        try (FileWriter file = new FileWriter(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "Recordings.json")) {
+            Log.v("GSON STATUS", "Commencing GSON to file");
+            Log.e("JSON String", (new Gson()).toJson(recordings) + "");
+            file.write((new Gson()).toJson(recordings));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Recordings jsonFromFile() {
+        Recordings recordings = new Recordings();
+        Gson gson = new Gson();
+        JsonReader reader = null;
+        try {
+            reader = new JsonReader(new FileReader(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + "Recordings.json"));
+            recordings = gson.fromJson(reader, Recordings.class);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (recordings == null) {
+            return new Recordings();
+        }
+        return recordings;
+    }
 
 
 }
