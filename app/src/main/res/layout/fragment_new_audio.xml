@@ -1,0 +1,140 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.simar.soundboard.Fragments.NewAudioFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/recordingNameEditText"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/recording_name"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/saveBtn"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Delete" />
+
+    </LinearLayout>
+
+    <TabHost
+        android:id="@+id/tabHost"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:id="@+id/micTab"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ToggleButton
+                        android:id="@+id/recordBtn"
+                        style="@style/Widget.AppCompat.Button.Colored"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginTop="19dp"
+                        android:text="@string/record" />
+
+                    <ProgressBar
+                        android:id="@+id/recordingProgress"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/recordBtn"
+                        android:layout_marginStart="94dp"
+                        android:indeterminate="false"
+                        android:max="100"
+                        android:layout_toEndOf="@+id/recordBtn"
+                        />
+
+                    <TextView
+                        android:id="@+id/progressTimeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/recordBtn"
+                        android:layout_alignBottom="@+id/recordBtn"
+                        android:layout_alignEnd="@+id/recordingProgress"
+                        android:layout_marginEnd="9dp"
+                        android:text="0:00" />
+
+                    <ToggleButton
+                        android:id="@+id/playButtons"
+                        style="@style/Widget.AppCompat.Button.Colored"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/recordBtn"
+                        android:layout_marginTop="55dp"
+                        android:layout_toStartOf="@+id/progressTimeText"
+                        android:textOff="Play"
+                        android:textOn="Pause" />
+
+                    <Space
+                        style="@style/AppTheme"
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp"
+                        android:layout_below="@+id/recordBtn"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="30dp" />
+
+                    <ProgressBar
+                        android:id="@+id/audioPlayProgressBar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/playButtons"
+                        android:layout_marginTop="67dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp"/>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/filesTab"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+</LinearLayout>
